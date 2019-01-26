@@ -16,40 +16,39 @@
   * Note: If minutes == 0, use 'o'clock'. If minutes <= 30, use 'past', and for minutes > 30, use 'to'.
 */
 
-const unitsNames = ['midnight', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'quarter', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-const decNames = ['zero', 'ten', 'twenty', 'half'];
+const unitsNames = [
+  'midnight', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'quarter', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty', 'twenty one', 'twenty two', 'twenty three', 'twenty four', 'twenty five', 'twenty six', 'twenty seven', 'twenty eight', 'twenty nine', 'half',
+];
 
 const solve = time => {
   const [hourStr, minuteStr] = time.split(':');
   const hour = +hourStr;
   const minute = +minuteStr;
 
-  const minuteDec = Math.floor(minute / 10);
-  const minuteUnit = minute % 10;
-  const minutesLeft = 60 - minute;
-  const minuteLeftDec = Math.floor(minutesLeft / 10);
-  const minuteLeftUnit = minutesLeft % 10;
+  const minuteUnit = minute < 30 ? minute : 60 - minute;
 
-  const minHour = hour % 12;
-  const maxHour = minHour < 11 ? minHour + 1 : 0;
+  const minHour = hour === 12 ? 12 : hour % 12;
+  const maxHour = hour === 23 ? 0 : minHour + 1;
   let result = '';
 
+  const minuteText = `minute${minuteUnit > 1 ? 's' : ''}`;
+
   if (minute === 0) {
-    result = hour === 0 ? `${unitsNames[minHour]}` : `${unitsNames[minHour]} o'clock`;
+    result = hour === 0 ? `midnight` : `${unitsNames[minHour]} o'clock`;
   } else if (minute < 15) {
-    result = `${unitsNames[minuteUnit]} minutes past ${unitsNames[minHour]}`;
+    result = `${unitsNames[minuteUnit]} ${minuteText} past ${unitsNames[minHour]}`;
   } else if (minute === 15) {
     result = `${unitsNames[minuteUnit]} past ${unitsNames[minHour]}`;
   } else if (minute < 30) {
-    result = `${decNames[minuteDec]} ${unitsNames[minuteUnit]} minutes past ${unitsNames[minHour]}`;
+    result = `${unitsNames[minuteUnit]} ${minuteText} past ${unitsNames[minHour]}`;
   } else if (minute === 30) {
-    result = `${decNames[minuteDec]} past ${unitsNames[minHour]}`
+    result = `${unitsNames[minuteUnit]} past ${unitsNames[minHour]}`
   } else if (minute < 45) {
-    result = `${decNames[minuteLeftUnit]} ${unitsNames[minuteLeftUnit]} minutes to ${unitsNames[maxHour]}`;
+    result = `${unitsNames[minuteUnit]} ${minuteText} to ${unitsNames[maxHour]}`;
   } else if (minute === 45) {
-    result = `${unitsNames[minuteLeftUnit]} to ${unitsNames[maxHour]}`;
+    result = `${unitsNames[minuteUnit]} to ${unitsNames[maxHour]}`;
   } else {
-    result = `${unitsNames[minuteLeftUnit]} minutes to ${unitsNames[maxHour]}`;
+    result = `${unitsNames[minuteUnit]} ${minuteText} to ${unitsNames[maxHour]}`;
   }
   return result;
 }
