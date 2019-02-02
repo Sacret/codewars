@@ -38,7 +38,7 @@ const WOWdecoder = seq => {
     if (/[G-Z]+/.test(str)) {
       return 'blocked jam attempt';
     }
-    if (/^[A-Z6-9]+$/.test(str)) {
+    if (/^[A-Z7-9]+$/.test(str)) {
       wowSignals.push(str);
       if (str.length < 6) {
         suspiciousAttempts++;
