@@ -14,15 +14,17 @@
 const solve = (str, idx) => {
   if (str[idx] !== '(') return -1;
 
-  const closingBraces = str.split('').reduce((arr, symbol) => {
-    if (symbol === ')') {
-      arr.push(symbol);
-      return arr;
-    }
-  }, []);
+  let sum = 1;
+  const symbols = str.split('').slice(idx + 1);
+  for (let i = 0; i < symbols.length; i++) {
+    const symbol = symbols[i];
+    if (symbol == '(') sum++;
+    if (symbol == ')') sum--;
 
-  if (arr[idx]) {
-    return arr[idx];
+    if (sum === 0) {
+      return i + idx + 1;
+    }
   }
+
   return -1;
 }
